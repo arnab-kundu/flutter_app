@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'InteractiveImage.dart';
+import 'dart:developer';//import for log
+import 'package:flutter_svg/flutter_svg.dart';//import for svg
 
 void main() => runApp(MyApp());
 
@@ -20,9 +22,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Demo Home Page'),
     );
   }
 }
@@ -57,7 +59,33 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      print('$_counter');
+      log('data: $_counter');
     });
+  }
+
+  Widget _myListView(BuildContext context) {
+
+    // backing data
+    final europeanCountries = ['Albania', 'Andorra', 'Armenia', 'Austria',
+      'Azerbaijan', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria',
+      'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland',
+      'France', 'Georgia', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Ireland',
+      'Italy', 'Kazakhstan', 'Kosovo', 'Latvia', 'Liechtenstein', 'Lithuania',
+      'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Monaco', 'Montenegro',
+      'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russia',
+      'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 'Spain', 'Sweden',
+      'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City'];
+
+    return ListView.builder(
+      itemCount: europeanCountries.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(europeanCountries[index]),
+        );
+      },
+    );
+
   }
 
 
@@ -112,14 +140,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 _incrementCounter();
               },
             ),
-            TextField(
-              onChanged: (text) {
-                setState(() {
-                  et = text;
-                });
-              },
+            Padding(
+              padding: const EdgeInsets.fromLTRB(36.0,0,36.0,0),
+              child: TextField(
+                onChanged: (text) {
+                  setState(() {
+                    et = text;
+                   /* if (platform.isAndroid) {
+                      AndroidIntent intent = AndroidIntent(
+                        action: 'action_view',
+                        data: 'https://play.google.com/store/apps/details?'
+                            'id=com.google.android.apps.myapp',
+                        arguments: {'authAccount': currentUserEmail},
+                      );
+                      await intent.launch();
+                    }*/
+                  });
+                },
+              ),
             ),
             InteractiveImage(Image.asset('images/screenshot.png')),
+            //Image.asset('images/screenshot.png'),
+            SizedBox.fromSize(
+              child:  SvgPicture.asset(
+                'images/ai_file.svg',
+              ),
+              size: Size(30.0, 40.0),
+            ),
           ],
         ),
       ),
