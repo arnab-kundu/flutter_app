@@ -1,9 +1,12 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'InteractiveImage.dart';
-import 'dart:developer';//import for log
-import 'package:flutter_svg/flutter_svg.dart';//import for svg
+import 'dart:developer'; //import for log
+import 'package:flutter_svg/flutter_svg.dart'; //import for svg
 //import 'package:platform/platform.dart';// don't know the use yet
+import 'dart:convert' as convert; // For Json parse
+import 'package:http/http.dart' as http; // For API CALL
+import 'package:fluttertoast/fluttertoast.dart'; // For Toast
 
 void main() => runApp(MyApp());
 
@@ -66,8 +69,47 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _myListView(BuildContext context) {
+  //////////////////
+  // API CALL
+  //////////////////
+  void apiCall(List<String> arguments) async {
+    // This example uses the Google Books API to search for books about http.
+    // https://developers.google.com/books/docs/overview
+    var url = "https://www.googleapis.com/books/v1/volumes?q={http}";
 
+    // Await the http get response, then decode the json-formatted responce.
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      var itemCount = jsonResponse['totalItems'];
+      print("Number of books about http: $itemCount.");
+      toast("Number of books about http: $itemCount.");
+    } else {
+      print("Request failed with status: ${response.statusCode}.");
+      toast("Request failed with status: ${response.statusCode}.");
+    }
+  }
+
+
+  //////////////////
+  // TOAST
+  //////////////////
+  void toast(String toastMsg) {
+    Fluttertoast.showToast(
+        msg: toastMsg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+
+  //////////////////
+  // LIST VIEW
+  //////////////////
+  Widget _myListView(BuildContext context) {
     // backing data
     final europeanCountries = ['Albania', 'Andorra', 'Armenia', 'Austria',
       'Azerbaijan', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria',
@@ -87,9 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,16 +174,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             FlatButton.icon(
               color: Colors.red,
-              icon: Icon(Icons.add_a_photo), //`Icon` to display
-              label: Text('Add a Photo'), //`Text` to display
+              icon: Icon(Icons.wifi), //`Icon` to display
+              label: Text('Call API'), //`Text` to display
               onPressed: () {
                 //Code to execute when Floating Action Button is clicked
                 //...
-                _incrementCounter();
+                apiCall(null);
               },
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(36.0,0,36.0,0),
+              padding: const EdgeInsets.fromLTRB(36.0, 0, 36.0, 0),
               child: TextField(
                 onChanged: (text) {
                   setState(() async {
@@ -164,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
             InteractiveImage(Image.asset('images/screenshot.png')),
             //Image.asset('images/screenshot.png'),
             SizedBox.fromSize(
-              child:  SvgPicture.asset(
+              child: SvgPicture.asset(
                 'images/ai_file.svg',
               ),
               size: Size(30.0, 40.0),
