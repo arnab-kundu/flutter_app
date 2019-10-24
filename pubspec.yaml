@@ -25,6 +25,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   # Use flutter_svg lib for using .svg images in flutter
   flutter_svg: 0.13.0
+
+  android_intent: 0.3.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

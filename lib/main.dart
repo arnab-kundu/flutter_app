@@ -1,7 +1,9 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'InteractiveImage.dart';
 import 'dart:developer';//import for log
 import 'package:flutter_svg/flutter_svg.dart';//import for svg
+//import 'package:platform/platform.dart';// don't know the use yet
 
 void main() => runApp(MyApp());
 
@@ -144,17 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.fromLTRB(36.0,0,36.0,0),
               child: TextField(
                 onChanged: (text) {
-                  setState(() {
+                  setState(() async {
                     et = text;
-                   /* if (platform.isAndroid) {
+                    if (Theme.of(context).platform == TargetPlatform.android) {
                       AndroidIntent intent = AndroidIntent(
                         action: 'action_view',
                         data: 'https://play.google.com/store/apps/details?'
                             'id=com.google.android.apps.myapp',
-                        arguments: {'authAccount': currentUserEmail},
+                        arguments: {'authAccount': 'currentUserEmail'},
                       );
                       await intent.launch();
-                    }*/
+                    }
                   });
                 },
               ),
