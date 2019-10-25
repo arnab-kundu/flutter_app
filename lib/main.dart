@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart'; //import for svg
 import 'dart:convert' as convert; // For Json parse
 import 'package:http/http.dart' as http; // For API CALL
 import 'package:fluttertoast/fluttertoast.dart'; // For Toast
+import 'package:css_colors/css_colors.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 
 void main() => runApp(MyApp());
 
@@ -66,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
       print('$_counter');
       log('data: $_counter');
+      //ButtonActivity()
     });
   }
 
@@ -167,6 +170,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               'You have pushed the button this many times: $et',
+              style: TextStyle(fontWeight: FontWeight.bold,color: CSSColors.orange.withOpacity(0.6),fontFamily: 'Pacifico-Regular'),
+            ),
+            GradientText(
+              'Hello',
+              shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
+              gradient: Gradients.hotLinear,
+              style: TextStyle(fontSize: 40.0,),
             ),
             Text(
               '$_counter',
